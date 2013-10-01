@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>531C2784-1A3C-493E-A7A0-6DDAE6E3A3D2</string>
+	<key>IDESourceControlProjectName</key>
+	<string>mySketch</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>DDFA27C5-8B97-4A3C-8906-774271C69006</key>
+		<string>https://github.com/kasparsj/RPi-visual-synth-workshop.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>mySketch.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>DDFA27C5-8B97-4A3C-8906-774271C69006</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/kasparsj/RPi-visual-synth-workshop.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>DDFA27C5-8B97-4A3C-8906-774271C69006</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>DDFA27C5-8B97-4A3C-8906-774271C69006</string>
+			<key>IDESourceControlWCCName</key>
+			<string>RPi-visual-synth-workshop</string>
+		</dict>
+	</array>
+</dict>
+</plist>

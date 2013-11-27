@@ -1,43 +1,77 @@
 #include "testApp.h"
+#include "ToTweener.h"
+#include "FromTweener.h"
+#include "MidiController.h"
+#include "OscController.h"
+#include "SoundController.h"
 
-//--------------------------------------------------------------
-void testApp::setup(){
-	
-	midiIn.listPorts(); // via instance
-	midiIn.openPort(0);
-	
-	// don't ignore sysex, timing, & active sense messages,
-	// these are ignored by default
-	midiIn.ignoreTypes(false, false, false);
-	
-	// add testApp as a listener
-	midiIn.addListener(this);
+const string testApp::OFF = "off";
+const string testApp::MIDI_MEDIATOR = OFF;
+const string testApp::OSC_MEDIATOR = OFF;
+const string testApp::SOUND_MEDIATOR = Mediator::DIRECT;
+
+testApp::testApp(ofxArgs* args) {
+	this->args = args;
 }
 
 //--------------------------------------------------------------
-void testApp::update(){
+void testApp::setup() {
+	bool hasArgs = args->contains("-midi") || args->contains("-osc") || args->contains("-sound") || args->contains("-f");
+	string midi = MIDI_MEDIATOR;
+	string osc = OSC_MEDIATOR;
+	string sound = SOUND_MEDIATOR;
+	bool fullscreen = DEFAULT_FULLSCREEN;
+	if (hasArgs) {
+		midi = args->contains("-midi") ? args->getString("midi") : OFF;
+		osc = args->contains("-osc") ? args->getString("osc") : OFF;
+		sound = args->contains("-midi") ? args->getString("sound") : OFF;
+		fullscreen = args->contains("-f");
+	}
+	
+	if (midi != OFF) {
+		controllers.push_back(new MidiController(getMediator(midi)));
+	}
+	
+	if (osc != OFF) {
+		controllers.push_back(new OscController(getMediator(osc)));
+	}
+	
+	if (sound != OFF) {
+		ofSetVerticalSync(true);
+		controllers.push_back(new SoundController(getMediator(sound)));
+	}
+	
+	if (fullscreen) {
+		ofSetFullscreen(true);
+	}
+}
 
+Mediator* testApp::getMediator(string type) {
+	if (type == Tweener::TO) {
+		return new ToTweener(&grid);
+	}
+	else if (type == Tweener::FROM) {
+		return new FromTweener(&grid);
+	}
+	else {
+		return new Mediator(&grid);
+	}
+}
+
+//--------------------------------------------------------------
+void testApp::update() {
+	
+	for (int i=0; i<controllers.size(); i++) {
+		controllers[i]->update();
+	}
+	
 }
 
 //--------------------------------------------------------------
 void testApp::draw(){
-	grid.draw();
-}
-
-//--------------------------------------------------------------
-void testApp::newMidiMessage(ofxMidiMessage& msg) {
-	// make a copy of the latest message
-	midiMessage = msg;
+	//ofBackgroundGradient(bgStartColor, bgEndColor);
 	
-	//ofLog() << "control: " << midiMessage.control << " value: " << midiMessage.value;
-	switch (midiMessage.control) {
-		case 8:
-			grid.setHLines(midiMessage.value);
-			break;
-		case 9:
-			grid.setVLines(midiMessage.value);
-			break;
-	}
+	grid.draw();
 }
 
 //--------------------------------------------------------------
@@ -49,18 +83,21 @@ void testApp::keyPressed(int key){
 void testApp::keyReleased(int key){
 	//ofLog() << "key: " << key;
 	switch (key) {
-		case 356: // left
-			grid.setHLines(grid.getHLines()-1);
+		case 'f':
+			ofToggleFullscreen();
 			break;
-		case 357: // up
-			grid.setVLines(grid.getVLines()+1);
-			break;
-		case 358: // right
-			grid.setHLines(grid.getHLines()+1);
-			break;
-		case 359: // down
-			grid.setVLines(grid.getVLines()-1);
-			break;
+//		case 356: // left
+//			grid.setHCount(grid.getHCount()-0.01);
+//			break;
+//		case 357: // up
+//			grid.setVCount(grid.getVCount()+0.01);
+//			break;
+//		case 358: // right
+//			grid.setHCount(grid.getHCount()+0.01);
+//			break;
+//		case 359: // down
+//			grid.setVCount(grid.getVCount()-0.01);
+//			break;
 	}
 }
 

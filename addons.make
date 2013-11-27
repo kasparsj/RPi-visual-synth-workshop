@@ -1,1 +1,4 @@
 ofxMidi
+ofxTween
+ofxArgs
+ofxOsc

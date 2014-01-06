@@ -8,6 +8,3 @@
 
 #include "Controller.h"
 
-Controller::Controller(Mediator* mediator) {
-	this->mediator = mediator;
-}

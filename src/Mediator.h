@@ -5,8 +5,6 @@
 class Mediator {
 	
 public:
-	static const string DIRECT;
-	
 	Mediator(Grid* grid);
 	virtual void update() {}
 	

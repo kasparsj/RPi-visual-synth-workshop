@@ -11,7 +11,8 @@ public:
 		setup();
 	}
 	void setup() override;
-	void update() override;
+	vector<string>& getPortList();
+	void openPort(unsigned int portNumber);
 	
 private:
 	

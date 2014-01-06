@@ -9,21 +9,6 @@
 #include "MidiController.h"
 
 void MidiController::setup() {
-	midiIn.listPorts(); // via instance
-	
-	controllerName = "UC-33 USB MIDI Controller";
-	controllerFound = false;
-	if ( midiIn.getNumPorts() > 0 ) {
-		for ( int i = 0; i < midiIn.getNumPorts(); i++ ){
-			if ( midiIn.getPortName(i).substr( 0,controllerName.length() ) == controllerName ) {
-				controllerFound = true;
-				midiIn.openPort( midiIn.getPortName(i) );
-				cout << "controller found: " << midiIn.getPortName(i) << endl;
-				break;
-			}
-		}
-	}
-	
 	// don't ignore sysex, timing, & active sense messages,
 	// these are ignored by default
 	midiIn.ignoreTypes(false, false, false);
@@ -32,18 +17,28 @@ void MidiController::setup() {
 	midiIn.addListener(this);
 }
 
-void MidiController::update() {
-	
+vector<string>& MidiController::getPortList() {
+	return midiIn.getPortList();
+}
+
+void MidiController::openPort(unsigned int portNumber) {
+	if (midiIn.getPort() != portNumber) {
+		if (midiIn.isOpen()) {
+			midiIn.closePort();
+		}
+		midiIn.openPort( midiIn.getPortName(portNumber) );
+		cout << "Midi port opened: " << midiIn.getPortName(portNumber) << endl;
+	}
 }
 
 void MidiController::newMidiMessage(ofxMidiMessage& msg) {
 	// make a copy of the latest message
 	midiMessage = msg;
 	
-	//	ofLog() << "control: " << midiMessage.control << " value: " << midiMessage.value;
+	//cout << "control: " << midiMessage.control << " value: " << midiMessage.value << endl;
 	
 	float perc = midiMessage.value/127.0f;
-	//ofLog() << "perc: " << perc;
+	//cout << "perc: " << perc << endl;
 	
 	switch (midiMessage.control) {
 		case 7: // MASTER F9

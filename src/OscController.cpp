@@ -9,7 +9,10 @@
 #include "OscController.h"
 
 void OscController::setup() {
-	receiver.setup(PORT);
+}
+
+void OscController::openPort(unsigned int portNumber) {
+	receiver.setup(portNumber);
 }
 
 void OscController::update() {
@@ -57,7 +60,10 @@ void OscController::update() {
 		else if (m.getAddress() == "/pan6") {
 			mediator->setBriOffset((1+value)/2);
 		}
+		isOpen = true;
 	}
 	
-	mediator->update();
+	if (isOpen) {
+		mediator->update();
+	}
 }

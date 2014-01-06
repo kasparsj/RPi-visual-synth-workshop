@@ -11,8 +11,8 @@
 void Grid::draw() {
 	int i, j;
 	
-	int vCountNum = round(_vCount*MAX(1, ofGetWidth()*_resolution));
-	int hCountNum = round(_hCount*MAX(1, ofGetHeight()*_resolution));
+	int vCountNum = round(_vCount*MAX(1, _width*_resolution));
+	int hCountNum = round(_hCount*MAX(1, _height*_resolution));
 	
 	int vColors = MAX(1, round(_vColors * 255*_colorRes));
 	int hColors = MAX(1, round(_hColors * 255*_colorRes));
@@ -37,31 +37,31 @@ void Grid::draw() {
 void Grid::drawVLine(int i, int count, int colors) {
 	int j = i-floor(count/2);
 	ofSetHexColor(getColor(j, colors));
-	ofRect(getX(j, count), 0, getWidth(count), ofGetHeight());
+	ofRect(getX(j, count), 0, getWidth(count), _height);
 }
 
 void Grid::drawHLine(int i, int count, int colors) {
 	int j = i-floor(count/2);
 	ofSetHexColor(getColor(j, colors));
-	ofRect(0, getY(j, count), ofGetWidth(), getHeight(count));
+	ofRect(0, getY(j, count), _width, getHeight(count));
 }
 
 float Grid::getX(int i, int count) {
 	float interval = getVInterval(count);
-	return ofGetWidth()/2.f + interval*i - getWidth(count)/2.f;
+	return _width/2.f + interval*i - getWidth(count)/2.f;
 }
 
 float Grid::getY(int i, int count) {
 	float interval = getHInterval(count);
-	return ofGetHeight()/2.f + interval*i-getHeight(count)/2.f;
+	return _height/2.f + interval*i-getHeight(count)/2.f;
 }
 
 float Grid::getVInterval(int count) {
-	return (float) ofGetWidth()/count;
+	return (float) _width/count;
 }
 
 float Grid::getHInterval(int count) {
-	return (float) ofGetHeight()/count;
+	return (float) _height/count;
 }
 
 float Grid::getWidth(int count) {
@@ -118,3 +118,4 @@ int Grid::getIntervalValue(int i, int count, int start, int end) {
 int Grid::triangleWave(int i, int count) {
 	return count - abs(i % (2*count) - count);
 }
+

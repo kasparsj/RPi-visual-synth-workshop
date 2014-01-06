@@ -2,8 +2,11 @@
 
 #include "ofMain.h"
 #include "ofxArgs.h"
+#include "Gui.h"
 #include "Grid.h"
-#include "Controller.h"
+#include "MidiController.h"
+#include "OscController.h"
+#include "SoundController.h"
 #include "Mediator.h"
 #include "Tweener.h"
 
@@ -15,6 +18,7 @@ public:
 	void setup();
 	void update();
 	void draw();
+	void exit();
 
 	void keyPressed(int key);
 	void keyReleased(int key);
@@ -28,19 +32,14 @@ public:
 	
 private:
 	
-	static const string OFF;
-	static const string MIDI_MEDIATOR;
-	static const string OSC_MEDIATOR;
-	static const string SOUND_MEDIATOR;
 	static const bool DEFAULT_FULLSCREEN = false;
 	
 	ofxArgs* args;
-	
-	Grid grid;
-	Mediator* mediator;
-	vector<Controller*> controllers;
-	
-	Mediator* getMediator(string type);
+	Gui* gui;
+	Grid* grid;
+	MidiController* midi;
+	OscController* osc;
+	SoundController* sound;
 	
 //	ofColor bgStartColor;
 //	ofColor bgEndColor;

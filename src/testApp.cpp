@@ -1,69 +1,38 @@
 #include "testApp.h"
 #include "ToTweener.h"
-#include "FromTweener.h"
-#include "MidiController.h"
-#include "OscController.h"
-#include "SoundController.h"
-
-const string testApp::OFF = "off";
-const string testApp::MIDI_MEDIATOR = OFF;
-const string testApp::OSC_MEDIATOR = OFF;
-const string testApp::SOUND_MEDIATOR = Mediator::DIRECT;
 
 testApp::testApp(ofxArgs* args) {
 	this->args = args;
+
+	grid = new Grid(ofGetWidth(), ofGetHeight());
+	
+	midi = new MidiController(new ToTweener(grid));
+	osc = new OscController(new ToTweener(grid));
+	sound = new SoundController(new Mediator(grid));
+	
+	gui = new Gui(ofGetHeight(), midi, osc, sound);
 }
 
 //--------------------------------------------------------------
 void testApp::setup() {
-	bool hasArgs = args->contains("-midi") || args->contains("-osc") || args->contains("-sound") || args->contains("-f");
-	string midi = MIDI_MEDIATOR;
-	string osc = OSC_MEDIATOR;
-	string sound = SOUND_MEDIATOR;
-	bool fullscreen = DEFAULT_FULLSCREEN;
-	if (hasArgs) {
-		midi = args->contains("-midi") ? args->getString("midi") : OFF;
-		osc = args->contains("-osc") ? args->getString("osc") : OFF;
-		sound = args->contains("-midi") ? args->getString("sound") : OFF;
-		fullscreen = args->contains("-f");
-	}
 	
-	if (midi != OFF) {
-		controllers.push_back(new MidiController(getMediator(midi)));
-	}
+	//ofSetFrameRate(120.0f);
+	//ofSetVerticalSync(true);
 	
-	if (osc != OFF) {
-		controllers.push_back(new OscController(getMediator(osc)));
-	}
+	gui->setup();
 	
-	if (sound != OFF) {
-		ofSetVerticalSync(true);
-		controllers.push_back(new SoundController(getMediator(sound)));
-	}
+	bool fullscreen = args->contains("-f") ? true : DEFAULT_FULLSCREEN;
 	
 	if (fullscreen) {
 		ofSetFullscreen(true);
 	}
 }
 
-Mediator* testApp::getMediator(string type) {
-	if (type == Tweener::TO) {
-		return new ToTweener(&grid);
-	}
-	else if (type == Tweener::FROM) {
-		return new FromTweener(&grid);
-	}
-	else {
-		return new Mediator(&grid);
-	}
-}
-
 //--------------------------------------------------------------
 void testApp::update() {
-	
-	for (int i=0; i<controllers.size(); i++) {
-		controllers[i]->update();
-	}
+	midi->update();
+	osc->update();
+	sound->update();
 	
 }
 
@@ -71,7 +40,7 @@ void testApp::update() {
 void testApp::draw(){
 	//ofBackgroundGradient(bgStartColor, bgEndColor);
 	
-	grid.draw();
+	grid->draw();
 }
 
 //--------------------------------------------------------------
@@ -86,17 +55,20 @@ void testApp::keyReleased(int key){
 		case 'f':
 			ofToggleFullscreen();
 			break;
+		case 'h':
+            gui->toggleVisible();
+			break;
 //		case 356: // left
-//			grid.setHCount(grid.getHCount()-0.01);
+//			grid->setHCount(grid->getHCount()-0.01);
 //			break;
 //		case 357: // up
-//			grid.setVCount(grid.getVCount()+0.01);
+//			grid->setVCount(grid->getVCount()+0.01);
 //			break;
 //		case 358: // right
-//			grid.setHCount(grid.getHCount()+0.01);
+//			grid->setHCount(grid->getHCount()+0.01);
 //			break;
 //		case 359: // down
-//			grid.setVCount(grid.getVCount()-0.01);
+//			grid->setVCount(grid->getVCount()-0.01);
 //			break;
 	}
 }
@@ -123,7 +95,7 @@ void testApp::mouseReleased(int x, int y, int button){
 
 //--------------------------------------------------------------
 void testApp::windowResized(int w, int h){
-
+	grid->resize(w, h);
 }
 
 //--------------------------------------------------------------
@@ -134,4 +106,8 @@ void testApp::gotMessage(ofMessage msg){
 //--------------------------------------------------------------
 void testApp::dragEvent(ofDragInfo dragInfo){ 
 
+}
+
+void testApp::exit() {
+	gui->exit();
 }

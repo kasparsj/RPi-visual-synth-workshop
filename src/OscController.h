@@ -7,15 +7,18 @@ class OscController : public Controller {
 	
 public:
 	
+	static const unsigned int PORT = 10000;
+	
 	explicit OscController(Mediator* mediator) : Controller(mediator) {
 		setup();
 	}
 	virtual void setup() override;
+	void openPort(unsigned int portNumber);
 	virtual void update() override;
 
 private:
 	
-	static const int PORT = 10000;
-	
+	bool isOpen = false;
 	ofxOscReceiver receiver;
+	
 };

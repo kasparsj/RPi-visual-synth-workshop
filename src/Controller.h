@@ -6,11 +6,19 @@ class Controller {
 	
 public:
 	
-	explicit Controller(Mediator* mediator);
+	explicit Controller(Mediator* mediator) {
+		setMediator(mediator);
+	}
 	virtual void setup() = 0;
-	virtual void update() = 0;
+	virtual void update()  {
+		mediator->update();
+	}
+	void setMediator(Mediator* mediator) {
+		this->mediator = mediator;
+	}
 	
 protected:
 	
-	Mediator* mediator;
+	Mediator* mediator = NULL;
+	
 };

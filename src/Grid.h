@@ -1,12 +1,16 @@
 #pragma once
 
-#include "ofMain.h"
+#include "ofGraphics.h"
+#include "ofLog.h"
 
-class Grid: public ofNode {
+class Grid {
 	
 public:
 	
-	Grid() {
+	Grid(int width, int height) {
+		_width = width;
+		_height = height;
+		
 		_startHue = 0;
 		_endHue = 1;
 		_startSat = 0;
@@ -43,21 +47,11 @@ public:
 	void setSatOffset(float perc) { _startSat = perc; }
 	float getBriOffset() { return _startBri; }
 	void setBriOffset(float perc) { _startBri = perc; }
-
-//	float getStartHue() { return _startHue; }
-//	void setStartHue(float perc) { _startHue = perc; }
-//	float getEndHue() { return _endHue; }
-//	void setEndHue(float perc) { _endHue = perc; }
-//
-//	float getStartSat() { return _startSat; }
-//	void setStartSat(float perc) { _startSat = perc; }
-//	float getEndSat() { return _endSat; }
-//	void setEndSat(float perc) { _endSat = perc; }
-//
-//	float getStartBri() { return _startBri; }
-//	void setStartBri(float perc) { _startBri = perc; }
-//	float getEndBri() { return _endBri; }
-//	void setEndBri(float perc) { _endBri = perc; }
+	
+	void resize(int w, int h) {
+		_width = w;
+		_height = h;
+	}
 	
 private:
 	
@@ -72,6 +66,9 @@ private:
 	int getColor(int, int);
 	int getIntervalValue(int, int, int, int);
 	int triangleWave(int, int);
+	
+	int _width;
+	int _height;
 	
 	float _resolution;
 	float _colorRes;

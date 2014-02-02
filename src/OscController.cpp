@@ -8,14 +8,12 @@
 
 #include "OscController.h"
 
-void OscController::setup() {
-}
-
-void OscController::openPort(unsigned int portNumber) {
+void OscController::setup(unsigned int portNumber) {
 	receiver.setup(portNumber);
 }
 
 void OscController::update() {
+	return;
 	// check for waiting messages
 	while(receiver.hasWaitingMessages()){
 		// get the next message

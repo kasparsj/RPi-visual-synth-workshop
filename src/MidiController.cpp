@@ -8,7 +8,7 @@
 
 #include "MidiController.h"
 
-void MidiController::setup() {
+MidiController::MidiController(Mediator* mediator) : Controller(mediator) {
 	// don't ignore sysex, timing, & active sense messages,
 	// these are ignored by default
 	midiIn.ignoreTypes(false, false, false);
@@ -17,18 +17,22 @@ void MidiController::setup() {
 	midiIn.addListener(this);
 }
 
-vector<string>& MidiController::getPortList() {
-	return midiIn.getPortList();
-}
-
-void MidiController::openPort(unsigned int portNumber) {
+void MidiController::setup(unsigned int portNumber) {
 	if (midiIn.getPort() != portNumber) {
-		if (midiIn.isOpen()) {
-			midiIn.closePort();
-		}
+		tearDown();
 		midiIn.openPort( midiIn.getPortName(portNumber) );
 		cout << "Midi port opened: " << midiIn.getPortName(portNumber) << endl;
 	}
+}
+
+void MidiController::tearDown() {
+	if (midiIn.isOpen()) {
+		midiIn.closePort();
+	}
+}
+
+vector<string>& MidiController::getPortList() {
+	return midiIn.getPortList();
 }
 
 void MidiController::newMidiMessage(ofxMidiMessage& msg) {

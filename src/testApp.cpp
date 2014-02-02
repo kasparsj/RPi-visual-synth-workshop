@@ -10,14 +10,14 @@ testApp::testApp(ofxArgs* args) {
 	osc = new OscController(new ToTweener(grid));
 	sound = new SoundController(new Mediator(grid));
 	
-	gui = new Gui(ofGetHeight(), midi, osc, sound);
+	gui = new Gui(ofGetHeight(), grid, sound, midi, osc);
 }
 
 //--------------------------------------------------------------
 void testApp::setup() {
 	
 	//ofSetFrameRate(120.0f);
-	//ofSetVerticalSync(true);
+	ofSetVerticalSync(true);
 	
 	gui->setup();
 	
@@ -30,10 +30,9 @@ void testApp::setup() {
 
 //--------------------------------------------------------------
 void testApp::update() {
+	sound->update();
 	midi->update();
 	osc->update();
-	sound->update();
-	
 }
 
 //--------------------------------------------------------------
@@ -41,6 +40,7 @@ void testApp::draw(){
 	//ofBackgroundGradient(bgStartColor, bgEndColor);
 	
 	grid->draw();
+	sound->draw();
 }
 
 //--------------------------------------------------------------

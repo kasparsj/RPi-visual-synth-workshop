@@ -9,7 +9,6 @@ public:
 	explicit Controller(Mediator* mediator) {
 		setMediator(mediator);
 	}
-	virtual void setup() = 0;
 	virtual void update()  {
 		mediator->update();
 	}

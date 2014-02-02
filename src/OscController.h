@@ -10,10 +10,8 @@ public:
 	static const unsigned int PORT = 10000;
 	
 	explicit OscController(Mediator* mediator) : Controller(mediator) {
-		setup();
 	}
-	virtual void setup() override;
-	void openPort(unsigned int portNumber);
+	virtual void setup(unsigned int portNumber);
 	virtual void update() override;
 
 private:

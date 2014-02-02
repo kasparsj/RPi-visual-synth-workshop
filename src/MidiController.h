@@ -7,12 +7,13 @@ class MidiController : public Controller, public ofxMidiListener {
 	
 public:
 	
-	explicit MidiController(Mediator* mediator) : Controller(mediator) {
-		setup();
+	MidiController(Mediator* mediator);
+	void setup(unsigned int portNumber);
+	void tearDown();
+	void update() {
+		
 	}
-	void setup() override;
 	vector<string>& getPortList();
-	void openPort(unsigned int portNumber);
 	
 private:
 	
